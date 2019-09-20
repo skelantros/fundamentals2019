@@ -1,2 +1,2 @@
-# fundamentals2019
-"Introduction to Programming", 2019, 19.b12, Egorov Aleksandr
+# Основы программирования 20!9
+Здесь я выкладываю код под домашнее задание, да, ага, ну вы поняли.
