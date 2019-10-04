@@ -12,6 +12,9 @@ int main()
 	for (int r = 0; r < ROWS; arr[r++] = new int[COLUMNS]);
 
 	snail(arr, true); printArray(arr);
+	delete[] arr;
+	system("pause");
+	return 0;
 }
 
 void snail(int** arr, bool ver = false)
