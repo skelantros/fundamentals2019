@@ -35,6 +35,7 @@ int main()
 	for (int r = 0; r < ROWS; arr[r++] = new int[COLUMNS]);
 	zigzag(arr, true); printArray(arr);
 	return 0;
-
+	
+	delete[] arr;
 	system("pause");
 }
