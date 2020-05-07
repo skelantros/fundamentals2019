@@ -24,26 +24,23 @@ std::istream& operator>>(std::istream& stream, DictPair& dp)
 	String tmp_str;
 	stream >> tmp_str;
 	int split_idx = tmp_str.find('$');
-	char* word; char* translate;
 	if (split_idx == -1)
-	{
-		word = new char[tmp_str.length() + 1];
-		memcpy_s(word, tmp_str.length() + 1, tmp_str.str(), tmp_str.length() + 1);
-		dp = DictPair(word);
-		delete[] word;
-	}
+		dp = DictPair(tmp_str);
 	else
 	{
-		word = new char[split_idx + 1];
-		memcpy_s(word, split_idx, tmp_str.str(), split_idx);
-		word[split_idx] = 0;
-		translate = new char[tmp_str.length() - split_idx];
-		memcpy_s(translate, tmp_str.length() - split_idx, tmp_str.str() + split_idx + 1, tmp_str.length() - split_idx);
-		dp = DictPair(word, translate);
-		delete[] word;
-		delete[] translate;
+		tmp_str[split_idx] = 0;
+		dp = DictPair(tmp_str.str(), tmp_str.str() + split_idx + 1);
 	}
-
-
 	return stream;
 }
+
+DictPair& DictPair::operator=(DictPair&& src)
+{
+	_word = std::move(src._word);
+	_translate = std::move(src._translate);
+	return *this;
+}
+
+DictPair::DictPair(DictPair&& src) :
+	_word(std::move(src._word)),
+	_translate(std::move(src._translate)) {}

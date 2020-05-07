@@ -28,6 +28,9 @@ public:
 	Vector& push_back(const Type& elem);
 	Vector& resize(size_t new_size);
 
+	Vector(Vector&& vec);
+	Vector& operator=(Vector&& right);
+
 	class iterator
 	{
 	private:
@@ -154,6 +157,7 @@ Vector<Type>& Vector<Type>::operator=(const Vector& vec)
 	{
 		_size = vec._size;
 		_capacity = vec._capacity;
+		_is_sorted = vec._is_sorted;
 		if (_data) delete[] _data;
 		_data = new Type[_capacity];
 		if (!_data) throw "Out of memory";
@@ -183,7 +187,7 @@ Vector<Type>& Vector<Type>::push_back(const Type& elem)
 		//resize(_capacity < 10 ? _capacity + 10 : 1.5*_capacity);
 	}
 	_data[_size++] = elem;
-	if (_data[_size] < _data[_size - 1])
+	if (_size > 1 && _data[_size - 1] < _data[_size - 2])
 		_is_sorted = false;
 	return *this;
 }
@@ -196,8 +200,42 @@ Vector<Type>& Vector<Type>::resize(size_t new_size)
 	Type* tmp = new Type[_capacity];
 	if (!tmp) throw "Out of memory";
 	for (int i = 0; i < _size; ++i)
-		tmp[i] = _data[i];
+		//tmp[i] = _data[i];
+		tmp[i] = std::move(_data[i]);
 	if (!_data)
 		delete[] _data;
 	_data = tmp;
+}
+
+template<typename Type>
+Vector<Type>::Vector(Vector&& vec)
+{
+	_size = vec._size;
+	_capacity = vec._capacity;
+	_is_sorted = vec._is_sorted;
+	_data = vec._data;
+	vec._data = 0;
+	vec._size = 0;
+	vec._capacity = 0;
+}
+
+template <typename Type>
+Vector<Type>& Vector<Type>::operator=(Vector&& right)
+{
+	if (this != &right)
+	{
+		_size = right._size;
+		_capacity = right._capacity;
+		/*_data = new Type[_capacity];
+		if (!_data) throw "Out of memory";
+		for (int i = 0; i < _size; ++i)
+			_data[i] = vec._data[i];*/
+		if (!_data) delete[] _data;
+		_data = right._data;
+		right._data = 0;
+		right._size = 0;
+		right._capacity = 0;
+		_is_sorted = right._is_sorted;
+	}
+	return *this;
 }

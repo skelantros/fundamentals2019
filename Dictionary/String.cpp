@@ -11,7 +11,7 @@ String::String(int size)
 {
 	_size = size;
 	if (_size <= 0)
-		throw "Error: wrong size while creating string";
+		//throw "Error: wrong size while creating string";
 	_data = new char[_size];
 	_data[0] = 0;
 }
@@ -25,7 +25,7 @@ String::String(const String& src)
 
 String::~String()
 {
-	delete[] _data;
+	if(!_data) delete[] _data;
 }
 
 void String::resize(int new_size)
@@ -149,9 +149,30 @@ std::ostream& operator<<(std::ostream& stream, const String& str)
 
 std::istream& operator>>(std::istream& stream, String& str)
 {
-	char src[257];
-	stream >> src;
+	char src[1024];
+	stream.getline(src, 1024);
 	str = String(src);
 	str.resize(str.length() + 1);
 	return stream;
+}
+
+String::String(String&& src)
+{
+	_size = src._size;
+	_data = src._data;
+	src._data = 0;
+	src._size = 0;
+}
+
+String& String::operator=(String&& src)
+{
+	if (src != *this)
+	{
+		if (!_data) delete[] _data;
+		_size = src._size;
+		_data = src._data;
+		src._data = 0;
+		src._size = 0;
+	}
+	return *this;
 }

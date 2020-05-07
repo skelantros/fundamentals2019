@@ -129,7 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="binarySearch.h" />
+    <ClInclude Include="Dictionary.h" />
     <ClInclude Include="DictPair.h" />
+    <ClInclude Include="DictPairT.h" />
     <ClInclude Include="qSort.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Vector.h" />

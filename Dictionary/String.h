@@ -11,6 +11,9 @@ public:
 	String(const char* str = "");
 	String(int size);
 	String(const String&);
+
+	String(String&&);
+	String& operator=(String&&);
 	~String();
 
 	int size() const;
